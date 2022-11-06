@@ -16,8 +16,24 @@ const INITIAL_STATE = {
   filter: '',
 };
 
+
 export class App extends Component {
   state = { ...INITIAL_STATE };
+
+  componentDidMount() {
+    const contactsSaved = localStorage.getItem("contacts");
+    if (contactsSaved) {
+      const parContatns = JSON.parse(contactsSaved);
+      this.setState ({ contacts: parContatns });
+    }
+  }
+  
+  componentDidUpdate(prevState) {
+    if (prevState.contacts !== this.state.contacts) {
+      const json = JSON.stringify(this.state.contacts);
+      localStorage.setItem('contacts', json);
+    }
+  }
 
 
   handleSubmit = e => {
